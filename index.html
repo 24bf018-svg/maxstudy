@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MaxStudy</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    margin:0;
+    background:#f4f6fb;
+}
+
+header{
+    background:#1e3a8a;
+    color:white;
+    text-align:center;
+    padding:20px;
+    font-size:32px;
+    font-weight:bold;
+}
+
+.container{
+    max-width:1200px;
+    margin:20px auto;
+    padding:20px;
+}
+
+h2{
+    color:#1e3a8a;
+}
+
+button{
+    display:block;
+    width:300px;
+    padding:14px;
+    margin:10px 0;
+    border:none;
+    border-radius:8px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+
+iframe{
+    width:100%;
+    height:750px;
+    border:1px solid #ccc;
+    margin-top:20px;
+    background:white;
+}
+</style>
+</head>
+
+<body>
+
+<header>MaxStudy</header>
+
+<div class="container">
+
+<h2>Math</h2>
+
+<button onclick="openPDF('pdfs/math-number.pdf')">
+Unit 1: Number
+</button>
+
+<button onclick="openPDF('pdfs/math-algebra.pdf')">
+Unit 2: Algebra
+</button>
+
+<button onclick="openPDF('pdfs/math-lengths-areas-volumes.pdf')">
+Unit 3: Lengths, Areas & Volumes
+</button>
+
+<button onclick="openPDF('pdfs/math-pythagoras.pdf')">
+Unit 4: Pythagoras
+</button>
+
+<button onclick="openPDF('pdfs/math-geometry.pdf')">
+Unit 5: Geometry
+</button>
+
+<button onclick="openPDF('pdfs/math-coordinate-geometry.pdf')">
+Unit 6: Coordinate Geometry
+</button>
+
+<h2>PDF Viewer</h2>
+
+<iframe id="pdfViewer"></iframe>
+
+</div>
+
+<script>
+function openPDF(file){
+    document.getElementById("pdfViewer").src = file;
+}
+</script>
+
+</body>
+</html>
