@@ -17,8 +17,27 @@ header{
     color:white;
     text-align:center;
     padding:20px;
-    font-size:32px;
+}
+
+.logo{
+    font-size:36px;
     font-weight:bold;
+}
+
+nav{
+    margin-top:12px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin:0 18px;
+    font-weight:bold;
+    font-size:16px;
+}
+
+nav a:hover{
+    text-decoration:underline;
 }
 
 .container{
@@ -29,11 +48,12 @@ header{
 
 h2{
     color:#1e3a8a;
+    margin-top:40px;
 }
 
 button{
     display:block;
-    width:350px;
+    width:450px;
     padding:14px;
     margin:10px 0;
     border:none;
@@ -41,52 +61,120 @@ button{
     background:#2563eb;
     color:white;
     font-size:16px;
+    text-align:left;
     cursor:pointer;
 }
 
 button:hover{
     background:#1d4ed8;
 }
+
+.info-box{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    line-height:1.7;
+}
 </style>
 </head>
 
 <body>
 
-<header>MaxStudy</header>
+<header>
+    <div class="logo">MaxStudy</div>
+    <nav>
+        <a href="#" onclick="showHome()">Home</a>
+        <a href="#" onclick="showInfo()">Info</a>
+        <a href="#" onclick="showContact()">Contact</a>
+    </nav>
+</header>
 
-<div class="container">
+<div class="container" id="content">
 
-<h2>Math</h2>
+<h2>Mathematics</h2>
 
-<button onclick="openPDF('math-number.pdf')">
-Unit 1: Number
+<button onclick="openPDF('math-number.pdf')">Number</button>
+<button onclick="openPDF('math-algebra.pdf')">Algebra</button>
+<button onclick="openPDF('math-lengths-areas-volumes.pdf')">Lengths, Areas & Volumes</button>
+<button onclick="openPDF('math-pythagoras.pdf')">Pythagoras</button>
+<button onclick="openPDF('math-geometry.pdf')">Geometry</button>
+<button onclick="openPDF('math-coordinate-geometry.pdf')">Coordinate Geometry</button>
+
+<h2>Biology</h2>
+
+<button onclick="openPDF('biology-characteristics-and-classification-of-living-organisms.pdf')">
+Characteristics and Classification of Living Organisms
 </button>
 
-<button onclick="openPDF('math-algebra.pdf')">
-Unit 2: Algebra
+<button onclick="openPDF('biology-organisation-of-the-organism.pdf')">
+Organisation of the Organism
 </button>
 
-<button onclick="openPDF('math-lengths-areas-volumes.pdf')">
-Unit 3: Lengths, Areas & Volumes
+<button onclick="openPDF('biology-movement-of-substances-into-and-out-of-cells.pdf')">
+Movement of Substances into and out of Cells
 </button>
 
-<button onclick="openPDF('math-pythagoras.pdf')">
-Unit 4: Pythagoras
+<button onclick="openPDF('biology-biological-molecules.pdf')">
+Biological Molecules
 </button>
 
-<button onclick="openPDF('math-geometry.pdf')">
-Unit 5: Geometry
+<button onclick="openPDF('biology-enzymes.pdf')">
+Enzymes
 </button>
 
-<button onclick="openPDF('math-coordinate-geometry.pdf')">
-Unit 6: Coordinate Geometry
+<button onclick="openPDF('biology-human-nutrition.pdf')">
+Human Nutrition
 </button>
 
 </div>
 
 <script>
+const homeContent = document.getElementById("content").innerHTML;
+
 function openPDF(file){
     window.location.href = file;
+}
+
+function showHome(){
+    document.getElementById("content").innerHTML = homeContent;
+}
+
+function showInfo(){
+    document.getElementById("content").innerHTML = `
+        <div class="info-box">
+            <h2>About MaxStudy</h2>
+            <p>
+                MaxStudy was created by Max to help students revise for Progress Check in SISM.
+            </p>
+            <p>
+                Building this website required many hours of collecting resources,
+                organizing topics, and uploading materials.
+            </p>
+            <p>
+                If this website helps you with your studies, please make good use of it
+                and consider sharing it with other students who may benefit from it.
+
+        
+            </p>
+            <p>
+                And please don't share this with people who is not in SISM because it's ilegal to share PDF of savemyexams worksheets. Thanks for your understanding.
+            </p>
+            <p>
+                And thank you for visiting MaxStudy, and good luck with your exams.
+            </p>
+        </div>
+    `;
+}
+
+function showContact(){
+    document.getElementById("content").innerHTML = `
+        <div class="info-box">
+            <h2>Contact</h2>
+            <p>Created by Max.</p>
+            <p>For suggestions or feedback, please contact the site administrator.</p>
+        </div>
+    `;
 }
 </script>
 
