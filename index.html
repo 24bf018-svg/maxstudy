@@ -33,7 +33,6 @@ nav a{
     text-decoration:none;
     margin:0 18px;
     font-weight:bold;
-    font-size:16px;
 }
 
 nav a:hover{
@@ -76,6 +75,17 @@ button:hover{
     box-shadow:0 4px 12px rgba(0,0,0,0.08);
     line-height:1.7;
 }
+
+input, textarea{
+    width:100%;
+    padding:12px;
+    margin-top:8px;
+    margin-bottom:15px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+    box-sizing:border-box;
+}
 </style>
 </head>
 
@@ -86,7 +96,7 @@ button:hover{
     <nav>
         <a href="#" onclick="showHome()">Home</a>
         <a href="#" onclick="showInfo()">Info</a>
-        <a href="#" onclick="showContact()">Contact</a>
+        <a href="#" onclick="showFeedback()">Feedback & Thanks</a>
     </nav>
 </header>
 
@@ -129,23 +139,45 @@ Human Nutrition
 
 </div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCXzgyCG1WD7R-7sboaZhnIAL78qQHnNOM",
+  authDomain: "maxstudy-300de.firebaseapp.com",
+  projectId: "maxstudy-300de",
+  storageBucket: "maxstudy-300de.firebasestorage.app",
+  messagingSenderId: "927641624017",
+  appId: "1:927641624017:web:3fa63fe94a56230b2f14f0",
+  measurementId: "G-HCF5QLXS0J"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 const homeContent = document.getElementById("content").innerHTML;
 
-function openPDF(file){
+window.openPDF = function(file){
     window.location.href = file;
-}
+};
 
-function showHome(){
+window.showHome = function(){
     document.getElementById("content").innerHTML = homeContent;
-}
+};
 
-function showInfo(){
+window.showInfo = function(){
     document.getElementById("content").innerHTML = `
         <div class="info-box">
             <h2>About MaxStudy</h2>
             <p>
-                MaxStudy was created by Max to help students revise for Progress Check in SISM.
+                MaxStudy was created by Max to help students revise for IGCSE examinations.
             </p>
             <p>
                 Building this website required many hours of collecting resources,
@@ -154,28 +186,64 @@ function showInfo(){
             <p>
                 If this website helps you with your studies, please make good use of it
                 and consider sharing it with other students who may benefit from it.
-
-        
             </p>
             <p>
-                And please don't share this with people who is not in SISM because it's ilegal to share PDF of savemyexams worksheets. Thanks for your understanding.
-            </p>
-            <p>
-                And thank you for visiting MaxStudy, and good luck with your exams.
+                Thank you for visiting MaxStudy, and good luck with your exams.
             </p>
         </div>
     `;
-}
+};
 
-function showContact(){
+window.showFeedback = function(){
     document.getElementById("content").innerHTML = `
         <div class="info-box">
-            <h2>Contact</h2>
-            <p>Created by Max.</p>
-            <p>For suggestions or feedback, please contact the site administrator.</p>
+            <h2>Feedback & Thanks</h2>
+
+            <p>
+                MaxStudy is a project that I created and continue to improve in my free time.
+                If you find any mistakes, have ideas for improvement,
+                or simply want to send a message of support,
+                I would be very grateful to hear from you.
+            </p>
+
+            <label>Your name</label>
+            <input id="feedbackName" type="text" placeholder="Your name (optional)">
+
+            <label>Your message</label>
+            <textarea id="feedbackText" rows="7" placeholder="Write your feedback, suggestion, or thank-you message here..."></textarea>
+
+            <button onclick="sendFeedback()">Send Message</button>
+
+            <p id="feedbackMessage"></p>
         </div>
     `;
-}
+};
+
+window.sendFeedback = async function(){
+    const name = document.getElementById("feedbackName").value;
+    const feedback = document.getElementById("feedbackText").value;
+    const message = document.getElementById("feedbackMessage");
+
+    if(feedback.trim() === ""){
+        message.textContent = "Please write your message first.";
+        return;
+    }
+
+    try{
+        await addDoc(collection(db, "feedback"), {
+            name: name,
+            message: feedback,
+            createdAt: serverTimestamp()
+        });
+
+        document.getElementById("feedbackName").value = "";
+        document.getElementById("feedbackText").value = "";
+        message.textContent = "Thank you for your message!";
+    }
+    catch(error){
+        message.textContent = "Error: " + error.message;
+    }
+};
 </script>
 
 </body>
