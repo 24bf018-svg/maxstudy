@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MaxStudy Messages</title>
+<style>
+body{
+  font-family:Arial,sans-serif;
+  background:#f4f6fb;
+  margin:0;
+  padding:20px;
+}
+h1{
+  color:#1e3a8a;
+}
+.message{
+  background:white;
+  padding:18px;
+  margin:15px 0;
+  border-radius:10px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.08);
+}
+.name{
+  font-weight:bold;
+  color:#1e3a8a;
+}
+.date{
+  color:#666;
+  font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>MaxStudy Messages</h1>
+<div id="messages">Loading...</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  orderBy
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCXzgyCG1WD7R-7sboaZhnIAL78qQHnNOM",
+  authDomain: "maxstudy-300de.firebaseapp.com",
+  projectId: "maxstudy-300de",
+  storageBucket: "maxstudy-300de.firebasestorage.app",
+  messagingSenderId: "927641624017",
+  appId: "1:927641624017:web:3fa63fe94a56230b2f14f0",
+  measurementId: "G-HCF5QLXS0J"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function loadMessages(){
+  const messagesDiv = document.getElementById("messages");
+  messagesDiv.innerHTML = "";
+
+  const q = query(collection(db, "feedback"), orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(q);
+
+  if(snapshot.empty){
+    messagesDiv.innerHTML = "<p>No messages yet.</p>";
+    return;
+  }
+
+  snapshot.forEach(doc => {
+    const data = doc.data();
+
+    let dateText = "No date";
+    if(data.createdAt && data.createdAt.toDate){
+      dateText = data.createdAt.toDate().toLocaleString();
+    }
+
+    const div = document.createElement("div");
+    div.className = "message";
+    div.innerHTML = `
+      <div class="name">${data.name || "Anonymous"}</div>
+      <div class="date">${dateText}</div>
+      <p>${data.message || data.feedback || ""}</p>
+    `;
+
+    messagesDiv.appendChild(div);
+  });
+}
+
+loadMessages();
+</script>
+
+</body>
+</html>
